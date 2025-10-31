@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initStarRating();
   initForms();
   initMobileMenu();
+  initConfetti();
 
   console.log("✅ Cuteland Daycare website loaded successfully!");
 });
@@ -431,6 +432,69 @@ function initMobileMenu() {
       menuBtn.classList.remove("active");
     });
   });
+}
+
+// ============================================
+// CONFETTI EFFECT для Events Section
+// ============================================
+function initConfetti() {
+  const eventsSection = document.querySelector("#events");
+
+  if (!eventsSection) return;
+
+  let hasTriggered = false; // Флаг чтобы сработало только один раз
+
+  // Intersection Observer следит когда секция появляется
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        // Если секция видна И еще не срабатывало
+        if (entry.isIntersecting && !hasTriggered) {
+          hasTriggered = true;
+          launchConfetti();
+        }
+      });
+    },
+    {
+      threshold: 0.3, // Сработает когда 30% секции видно
+    }
+  );
+
+  observer.observe(eventsSection);
+}
+
+// Функция запуска салюта
+function launchConfetti() {
+  const colors = ["#ff4444", "#4a90e2", "#ffd93d", "#6bcb77"]; // Ваши цвета
+
+  // Левая пушка
+  confetti({
+    particleCount: 100,
+    angle: 60,
+    spread: 55,
+    origin: { x: 0, y: 0.6 },
+    colors: colors,
+  });
+
+  // Правая пушка
+  confetti({
+    particleCount: 100,
+    angle: 120,
+    spread: 55,
+    origin: { x: 1, y: 0.6 },
+    colors: colors,
+  });
+
+  // Дополнительный залп через 200ms для эффекта
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      angle: 90,
+      spread: 70,
+      origin: { x: 0.5, y: 0.5 },
+      colors: colors,
+    });
+  }, 200);
 }
 
 // ========================================
